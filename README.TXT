@@ -1,0 +1,1 @@
+Permite agregar, modificar o eliminar secciones al catálogo de materias SGA

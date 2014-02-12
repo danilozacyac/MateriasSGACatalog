@@ -3,10 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using MateriasSGA.ConnectionScjn;
 using MateriasSGA.Dto;
-using System.Collections.Generic;
 
 namespace MateriasSGA.Model
 {
@@ -178,7 +176,6 @@ namespace MateriasSGA.Model
             SqlCommand cmd;
             SqlDataReader reader;
 
-            Dictionary<long, int> numConsec = new Dictionary<long, int>();
             int newConsec = 5;
 
             try
