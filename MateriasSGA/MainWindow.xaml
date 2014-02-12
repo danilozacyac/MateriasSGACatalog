@@ -1,0 +1,103 @@
+﻿<Window x:Class="MateriasSGA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:igDP="http://infragistics.com/DataPresenter"
+        Title="MainWindow"
+        Width="525"
+        Height="350"
+        Icon="/MateriasSGA;component/1361319565_87438.ico"
+        Loaded="Window_Loaded"
+        Topmost="False"
+        WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <igDP:XamDataGrid Name="Materias"
+                          Grid.Row="1"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          AutoFit="True"
+                          DataSource="{Binding}"
+                          FontSize="14"
+                          GroupByAreaLocation="None"
+                          IsGroupByAreaExpanded="False"
+                          RecordAdded="Materias_RecordAdded"
+                          RecordUpdated="Materias_RecordUpdated">
+            <igDP:XamDataGrid.FieldLayoutSettings>
+
+                <igDP:FieldLayoutSettings AddNewRecordLocation="OnTopFixed"
+                                          AllowAddNew="True"
+                                          AllowDelete="False"
+                                          SelectionTypeCell="Single"
+                                          SelectionTypeField="None"
+                                          SelectionTypeRecord="Single" />
+
+            </igDP:XamDataGrid.FieldLayoutSettings>
+            <igDP:XamDataGrid.FieldLayouts>
+                <igDP:FieldLayout>
+
+                    <igDP:FieldLayout.Fields>
+
+                        <igDP:Field Name="MateriaInt"
+                                    Width="60"
+                                    Label=" MateriaId" />
+                        <igDP:Field Name="Nivel"
+                                    Width="70"
+                                    Label="Nivel" />
+                        <igDP:Field Name="Padre"
+                                    Width="90"
+                                    Label="Padre" />
+                        <igDP:Field Name="Descripcion"
+                                    Width="*"
+                                    Label="Descripcion">
+
+                            <igDP:Field.Settings>
+                                <igDP:FieldSettings>
+                                    <igDP:FieldSettings.CellValuePresenterStyle>
+                                        <Style TargetType="{x:Type igDP:CellValuePresenter}">
+
+                                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Value}" />
+
+                                        </Style>
+                                    </igDP:FieldSettings.CellValuePresenterStyle>
+
+                                </igDP:FieldSettings>
+                            </igDP:Field.Settings>
+
+
+                        </igDP:Field>
+
+                        <igDP:Field Name="SeccionPadre"
+                                    Width="70"
+                                    Label="SeccionPadre" />
+                        <igDP:Field Name="Historica" Label="Historica" />
+
+                        <igDP:Field Name="Consec"
+                                    Label="Consec"
+                                    Visibility="Collapsed" />
+                        <igDP:Field Name="Hoja"
+                                    Label="Hoja"
+                                    Visibility="Collapsed" />
+                        <igDP:Field Name="NvlImpresion"
+                                    Label="NvlImpresion"
+                                    Visibility="Collapsed" />
+
+                    </igDP:FieldLayout.Fields>
+                </igDP:FieldLayout>
+            </igDP:XamDataGrid.FieldLayouts>
+        </igDP:XamDataGrid>
+        <Menu Name="menu1"
+              Height="23"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Top">
+            <MenuItem Header="_Herramientas">
+                <MenuItem Name="DaOrden"
+                          Click="DaOrden_Click"
+                          Header="Reasignar orden" />
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>
