@@ -97,6 +97,7 @@
                 <MenuItem Name="DaOrden"
                           Click="DaOrden_Click"
                           Header="Reasignar orden" />
+                <MenuItem Name="GeneraPdfArbol" Header="Generar estructura del catálogo" Click="GeneraPdfArbol_Click"></MenuItem>
             </MenuItem>
         </Menu>
     </Grid>

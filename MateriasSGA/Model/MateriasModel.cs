@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -268,6 +269,47 @@ namespace MateriasSGA.Model
             }
         }
 
-        
+
+
+        public ObservableCollection<Materia> GetMateriasForReport(int idPadre)
+        {
+            ObservableCollection<Materia> materiasSga = new ObservableCollection<Materia>();
+
+            string sql = @"select * from cMateriasSGA WHERE Padre = @IdPadre Order by consec";
+            SqlConnection conn = Conexion.GetConexionSql();
+            SqlCommand cmd;
+            SqlDataReader reader;
+
+            try
+            {
+                conn.Open();
+
+                cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@IdPadre", idPadre);
+
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Materia materia = new Materia();
+
+                    materia.MateriaInt = Convert.ToInt32(reader["ID"]);
+                    materia.Descripcion = reader["Descripcion"].ToString();
+                    materia.MateriasHijas = this.GetMateriasForReport(materia.MateriaInt);
+
+                    materiasSga.Add(materia);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return materiasSga;
+        }
     }
 }

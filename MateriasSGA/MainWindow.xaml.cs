@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using MateriasSGA.Model;
 using Infragistics.Windows.DataPresenter;
 using MateriasSGA.Dto;
+using System.Collections.ObjectModel;
+using MateriasSGA.Reporting;
 
 namespace MateriasSGA
 {
@@ -81,6 +83,14 @@ namespace MateriasSGA
             materiasMod.UpdateOrderNumber();
 
             this.Window_Loaded(null, null);
+        }
+
+        private void GeneraPdfArbol_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<Materia> materias = new MateriasModel().GetMateriasForReport(-1);
+
+            PdfTreeStructure pdf = new PdfTreeStructure();
+            pdf.GenerateTreeStructure(materias);
         }
 
         

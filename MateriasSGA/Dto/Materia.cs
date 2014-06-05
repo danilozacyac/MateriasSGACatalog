@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace MateriasSGA.Dto
 {
@@ -16,6 +15,9 @@ namespace MateriasSGA.Dto
         private int consec;
         private int hoja;
         private int nvlImpresion;
+        private ObservableCollection<Materia> materiasHijas;
+
+        
 
         public int MateriaInt
         {
@@ -122,6 +124,18 @@ namespace MateriasSGA.Dto
             set
             {
                 this.nvlImpresion = value;
+            }
+        }
+
+        public ObservableCollection<Materia> MateriasHijas
+        {
+            get
+            {
+                return this.materiasHijas;
+            }
+            set
+            {
+                this.materiasHijas = value;
             }
         }
     }
