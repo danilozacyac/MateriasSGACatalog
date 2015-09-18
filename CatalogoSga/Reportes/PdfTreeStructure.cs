@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using MateriasSGA.Dto;
+using CatalogoSga.Dto;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
-namespace MateriasSGA.Reporting
+namespace CatalogoSga.Reportes
 {
     public class PdfTreeStructure
     {
         private iTextSharp.text.Document myDocument;
 
-        public void GenerateTreeStructure(ObservableCollection<Materia> listaMaterias)
+        public void GenerateTreeStructure(List<ClasificacionSga> listaMaterias)
         {
             myDocument = new iTextSharp.text.Document(PageSize.A4, 50, 50, 50, 60);
 
@@ -43,9 +43,9 @@ namespace MateriasSGA.Reporting
 
         }
 
-        public void PrintTree(ObservableCollection<Materia> materias, int indent)
+        public void PrintTree(List<ClasificacionSga> materias, int indent)
         {
-            foreach (Materia mat in materias)
+            foreach (ClasificacionSga mat in materias)
             {
 
                 Paragraph para = new Paragraph(mat.Descripcion, Fuentes.ContenidoCelda);
@@ -53,7 +53,7 @@ namespace MateriasSGA.Reporting
 
                 myDocument.Add(para);
 
-                this.PrintTree(mat.MateriasHijas, indent + 15);
+                this.PrintTree(mat.SubClasificaciones, indent + 15);
 
             }
 

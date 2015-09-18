@@ -2,7 +2,7 @@
 using System.Linq;
 using iTextSharp.text;
 
-namespace MateriasSGA.Reporting
+namespace CatalogoSga.Reportes
 {
     public class Fuentes
     {

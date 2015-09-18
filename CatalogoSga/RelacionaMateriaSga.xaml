@@ -1,0 +1,71 @@
+﻿<Window x:Class="CatalogoSga.RelacionaMateriaSga"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        Title="Materias SGA Relacionadas"
+        Width="700"
+        Height="500"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <!--  Load this specific theme because the Aero theme for CheckBox has issues.  -->
+
+            <Style x:Key="TreeViewItemStyle" TargetType="{x:Type telerik:RadTreeViewItem}">
+                <Setter Property="IsExpanded" Value="True" />
+            </Style>
+
+            <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding SubClasificaciones, Mode=OneTime}">
+                <StackPanel Orientation="Horizontal">
+                    <!--  These elements are bound to a FooViewModel object.  -->
+                    <CheckBox VerticalAlignment="Center"
+                              Focusable="False"
+                              IsChecked="{Binding IsChecked,
+                                                  Mode=TwoWay}"
+                              IsEnabled="{Binding IsReadOnly}" />
+                    <ContentPresenter Margin="2,0" Content="{Binding Descripcion, Mode=OneTime}" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
+        <telerik:RadTreeView x:Name="MateriasTree"
+                             Grid.Row="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource TreeViewItemStyle}"
+                             ItemTemplate="{StaticResource CheckBoxItemTemplate}"
+                             ItemsSource="{Binding }" />
+
+
+        <Button Name="BtnQuitar"
+                Grid.Row="1"
+                Margin="0,14,0,8"
+                HorizontalAlignment="Left"
+                Command="Undo"
+                Content="Deseleccionar todo" />
+        <Button Name="BtnSalvar"
+                Grid.Row="1"
+                Width="100"
+                Height="26"
+                Margin="0,10,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnSalvar_Click"
+                Content="Salvar y salir" />
+
+        <Button Name="BtnSalir"
+                Grid.Row="1"
+                Width="100"
+                Height="26"
+                Margin="0,10,118,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnSalir_Click"
+                Content="Salir sin salvar" />
+
+    </Grid>
+</Window>
