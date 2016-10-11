@@ -5,7 +5,8 @@
         Title="Materias SGA Relacionadas"
         Width="700"
         Height="500"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <!--  Load this specific theme because the Aero theme for CheckBox has issues.  -->

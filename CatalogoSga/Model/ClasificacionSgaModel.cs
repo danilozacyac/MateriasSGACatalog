@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CatalogoSga.Dto;
 using MantesisVerIusCommonObjects.Dto;
 using ScjnUtilities;
@@ -583,7 +580,7 @@ namespace CatalogoSga.Model
                 {
                     ClasificacionSga materia = new ClasificacionSga(dataReader["Descripcion"].ToString(),
                         GetEstructuraNivel(Convert.ToInt32(dataReader["ID"].ToString()), isReadOnly), Convert.ToInt32(dataReader["ID"].ToString()));
-
+                    materia.Nivel = Convert.ToInt32(dataReader["Nivel"]);
                     materia.IsReadOnly = isReadOnly;
 
                     listaMaterias.Add(materia);
@@ -608,6 +605,41 @@ namespace CatalogoSga.Model
         }
 
 
+
+        public void EliminaMateria(int id)
+        {
+
+            SqlConnection connection = new SqlConnection(connectionString);// (SqlConnection)DbConnDac.GetConnectionIus();
+
+            SqlCommand cmd;
+            SqlDataReader dataReader;
+            string miQry;
+
+            try
+            {
+                connection.Open();
+                miQry = "DELETE FROM cMateriasSGA WHERE Id = @Id";
+                cmd = new SqlCommand(miQry, connection);
+                cmd.ExecuteNonQuery();
+
+                
+            }
+            catch (SqlException ex)
+            {
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ClasificacionSgaModel", "SgaControl");
+            }
+            catch (Exception ex)
+            {
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ClasificacionSgaModel", "SgaControl");
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
 
         
 

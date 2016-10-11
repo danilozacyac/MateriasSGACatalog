@@ -1,4 +1,4 @@
-﻿<Window  x:Class="MateriasSGA.MainWindow"
+﻿<Window x:Class="MateriasSGA.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:CatalogoSga="clr-namespace:CatalogoSga;assembly=CatalogoSga"
@@ -28,11 +28,17 @@
                           Click="GeneraPdfArbol_Click"
                           Header="Generar estructura del catálogo" />
                 <MenuItem x:Name="GeneraWordArbol" Header="Generar estructura del catálogo en Word" />
+                <MenuItem x:Name="EliminaSeleccion" Header="Elimina materia seleccionada" Click="EliminaSeleccion_Click" />
             </MenuItem>
         </Menu>
-        <!--<CatalogoSga:MantoClasifSga Grid.Row="1"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch" />-->
-        <CatalogoSga:ShowMateriasTree Grid.Row="1"/>
+        <CatalogoSga:TesisRelacionadas Grid.Row="1"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch" />
+        <!--
+            <CatalogoSga:MantoClasifSga Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch" />
+        -->
+          <CatalogoSga:ShowMateriasTree Grid.Row="1" x:Name="Mate"/>  
     </Grid>
 </Window>

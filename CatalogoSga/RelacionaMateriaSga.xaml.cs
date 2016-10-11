@@ -20,6 +20,27 @@ namespace CatalogoSga
         private readonly int volumen;
         private readonly bool isUpdatable;
 
+        public static  string textoDeLasMaterias;
+        private string procede = String.Empty;
+
+        /// <summary>
+        /// Permite obtener el árbol de las materia seleccionadas en forma de texto
+        /// </summary>
+        /// <param name="textoDeLasMaterias"></param>
+        /// <param name="procede">Indica el programa que hace el llamado a esta ventana</param>
+        public RelacionaMateriaSga(string procede)
+        {
+            InitializeComponent();
+            this.procede = procede;
+            this.isUpdatable = true;
+        }
+
+        /// <summary>
+        /// Permite relacionar una o más materias del Catálogo de SGA con un tesis
+        /// </summary>
+        /// <param name="ius">Registro digital de la tesis a relacionar</param>
+        /// <param name="volumen">Volumen del Semanario al que pertenece la tesis</param>
+        /// <param name="isUpdatable">Indica si la vista es o no de solo lectura</param>
         public RelacionaMateriaSga(int ius, int volumen, bool isUpdatable)
         {
             InitializeComponent();
@@ -50,21 +71,41 @@ namespace CatalogoSga
         {
             if (isUpdatable)
             {
-                GetSeleccionados(((ClasificacionSga)MateriasTree.Items[0]).SubClasificaciones);
-
-                if (idMaterias.Count == 0)
+                if (procede.Equals("Listado"))
                 {
-                    MessageBox.Show("Seleccione al menos un tema con el cual relacionar la tesis, de los contrario oprima cancelar");
-                    return;
+                    GetSeleccionadosItems(((ClasificacionSga)MateriasTree.Items[0]).SubClasificaciones);
+
+                    if (elementosSeleccionados.Count > 0)
+                    {
+                        elementosSeleccionados.Reverse();
+                        foreach (ClasificacionSga item in elementosSeleccionados)
+                        {
+                            this.GetMateriasTreeString(item);
+                            textoDeLasMaterias += "\n\n";
+                        }
+                    }
+
+                    textoDeLasMaterias = textoDeLasMaterias.Replace("Todas\n", "");
+                    this.Close();
                 }
                 else
                 {
-                    new ClasificacionSgaModel().SetRelacionMateriasIus(ius, idMaterias, volumen);
-                    MessageBox.Show("Esta tesis fue relacionada con " + idMaterias.Count.ToString() + ((idMaterias.Count == 1) ? " tema" : " temas"));
-                    idMaterias.Clear();
+                    GetSeleccionados(((ClasificacionSga)MateriasTree.Items[0]).SubClasificaciones);
 
-                    DialogResult = true;
-                    this.Close();
+                    if (idMaterias.Count == 0)
+                    {
+                        MessageBox.Show("Seleccione al menos un tema con el cual relacionar la tesis, de los contrario oprima cancelar");
+                        return;
+                    }
+                    else
+                    {
+                        new ClasificacionSgaModel().SetRelacionMateriasIus(ius, idMaterias, volumen);
+                        MessageBox.Show("Esta tesis fue relacionada con " + idMaterias.Count.ToString() + ((idMaterias.Count == 1) ? " tema" : " temas"));
+                        idMaterias.Clear();
+
+                        DialogResult = true;
+                        this.Close();
+                    }
                 }
             }
         }
@@ -86,6 +127,26 @@ namespace CatalogoSga
             }
         }
 
+        List<ClasificacionSga> elementosSeleccionados = new List<ClasificacionSga>();
+        private void GetSeleccionadosItems(List<ClasificacionSga> items)
+        {
+            foreach (ClasificacionSga item in items)
+            {
+                if (item.IsChecked == true)
+                    elementosSeleccionados.Add(item);
+
+                GetSeleccionadosItems(item.SubClasificaciones);
+            }
+        }
+
+        private void GetMateriasTreeString(ClasificacionSga item)
+        {
+            textoDeLasMaterias = this.GetTabNumber(item.Nivel) + item.Descripcion + "\n" + textoDeLasMaterias;
+
+            if (!item.Descripcion.Contains("Todas"))
+                GetMateriasTreeString(item.GetParent());
+        }
+
         private void SetSeleccionados(List<ClasificacionSga> items, List<int> matSeleccionadas)
         {
             foreach (ClasificacionSga item in items)
@@ -95,6 +156,16 @@ namespace CatalogoSga
 
                 SetSeleccionados(item.SubClasificaciones, matSeleccionadas);
             }
+        }
+
+        private string GetTabNumber(int nivel)
+        {
+            string tabs = String.Empty;
+            for (int x = 1; x <= nivel; x++)
+            {
+                tabs += "\t";
+            }
+            return tabs;
         }
     }
 }

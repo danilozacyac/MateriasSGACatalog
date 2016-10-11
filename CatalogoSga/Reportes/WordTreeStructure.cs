@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using CatalogoSga.Dto;
+using CatalogoSga.Singletons;
+using ScjnUtilities;
 
 namespace CatalogoSga.Reportes
 {
@@ -15,8 +18,9 @@ namespace CatalogoSga.Reportes
         //Create a missing variable for missing value
         object missing = System.Reflection.Missing.Value;
 
-        public void CreateDocument(List<ClasificacionSga> listaMaterias)
+        public void CreateDocument()
         {
+            string filePath = Path.GetTempFileName() + ".docx";
             try
             {
                 //Create an instance for word app
@@ -33,20 +37,32 @@ namespace CatalogoSga.Reportes
                 //Create a new document
                 document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
 
-                this.PrintTree(listaMaterias, 0);
+                this.PrintTree(ClasificacionSingleton.Clasificacion, 0);
+
+                foreach (Microsoft.Office.Interop.Word.Section wordSection in document.Sections)
+                {
+                    Microsoft.Office.Interop.Word.Range footerRange = wordSection.Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    footerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdGray50;
+                    footerRange.Font.Size = 12;
+                    footerRange.Text = DateTimeUtilities.ToLongDateFormat(DateTime.Now);
+                }
+
 
                 //Save the document
-                object filename = @"C:\ModuloIntercomunicacionBD\temp1.docx";
+                object filename = filePath;
                 document.SaveAs2(ref filename);
                 document.Close(ref missing, ref missing, ref missing);
                 document = null;
                 winword.Quit(ref missing, ref missing, ref missing);
                 winword = null;
-                MessageBox.Show("Document created successfully !");
+                MessageBox.Show("Estructura generada satisfactoriamente!");
+
+                System.Diagnostics.Process.Start(filePath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,PdfTreeStructure", "MateriasSGA");
             }
         }
 

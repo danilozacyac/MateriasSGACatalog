@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using CatalogoSga;
 using CatalogoSga.Dto;
 using CatalogoSga.Model;
 using CatalogoSga.Reportes;
@@ -24,8 +23,8 @@ namespace MateriasSGA
         {
             //Materias.DataContext = new MateriasModel().GetTodaslasMaterias();
 
-            RelacionaMateriaSga wiun = new RelacionaMateriaSga(2000334, 8783, false);
-            wiun.Show();
+            //RelacionaMateriaSga wiun = new RelacionaMateriaSga(2000334, 8783, false);
+            //wiun.Show();
 
         }
 
@@ -38,7 +37,12 @@ namespace MateriasSGA
             List<ClasificacionSga> materias = new ClasificacionSgaModel().GetClasificacion(-1);
 
             PdfTreeStructure pdf = new PdfTreeStructure();
-            pdf.GenerateTreeStructure(materias);
+            pdf.GenerateTreeStructure();
+        }
+
+        private void EliminaSeleccion_Click(object sender, RoutedEventArgs e)
+        {
+            Mate.DeleteMateria();
         }
 
         

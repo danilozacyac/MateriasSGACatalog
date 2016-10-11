@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using CatalogoSga.Dto;
+using CatalogoSga.Singletons;
+using ScjnUtilities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
@@ -13,7 +14,7 @@ namespace CatalogoSga.Reportes
     {
         private iTextSharp.text.Document myDocument;
 
-        public void GenerateTreeStructure(List<ClasificacionSga> listaMaterias)
+        public void GenerateTreeStructure()
         {
             myDocument = new iTextSharp.text.Document(PageSize.A4, 50, 50, 50, 60);
 
@@ -22,18 +23,19 @@ namespace CatalogoSga.Reportes
             try
             {
                 PdfWriter writer = PdfWriter.GetInstance(myDocument, new FileStream(filePath, FileMode.Create));
-                //HeaderFooter pdfPage = new HeaderFooter();
-                //writer.PageEvent = pdfPage;
+                HeaderFooter pdfPage = new HeaderFooter();
+                writer.PageEvent = pdfPage;
                 //writer.ViewerPreferences = PdfWriter.PageModeUseOutlines;
                 ////Paragraph para;
 
                 myDocument.Open();
 
-                this.PrintTree(listaMaterias, 0);
+                this.PrintTree(ClasificacionSingleton.Clasificacion, 0);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,PdfTreeStructure", "MateriasSGA");
             }
             finally
             {

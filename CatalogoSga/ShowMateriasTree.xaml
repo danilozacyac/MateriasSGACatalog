@@ -31,7 +31,8 @@
                              FontSize="16"
                              ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                              ItemTemplate="{StaticResource CheckBoxItemTemplate}"
-                             ItemsSource="{Binding}" />
+                             ItemsSource="{Binding}"
+                             SelectionChanged="MateriasTree_SelectionChanged" />
 
     </Grid>
 </UserControl>

@@ -1,0 +1,128 @@
+﻿<UserControl x:Class="CatalogoSga.TesisRelacionadas"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:UIControls="clr-namespace:UIControls;assembly=UIControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             Background="White"
+             Loaded="UserControl_Loaded"
+             d:DesignHeight="300"
+             d:DesignWidth="700"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <!--  Load this specific theme because the Aero theme for CheckBox has issues.  -->
+            <Style x:Key="TreeViewItemStyle" TargetType="{x:Type telerik:RadTreeViewItem}">
+                <Setter Property="IsExpanded" Value="True" />
+            </Style>
+
+            <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding SubClasificaciones, Mode=OneTime}">
+                <StackPanel Orientation="Horizontal">
+                    <ContentPresenter Margin="2,0" Content="{Binding Descripcion, Mode=OneTime}" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2.5*" />
+        </Grid.ColumnDefinitions>
+
+        <telerik:RadTreeView x:Name="MateriasTree"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             FontSize="13"
+                             ItemContainerStyle="{StaticResource TreeViewItemStyle}"
+                             ItemTemplate="{StaticResource CheckBoxItemTemplate}"
+                             ItemsSource="{Binding}"
+                             SelectionChanged="MateriasTree_SelectionChanged" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <telerik:RadGridView x:Name="GTesisRel"
+                                 Grid.Row="1"
+                                 Margin="0,0,0,30"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 AutoGenerateColumns="False"
+                                 IsReadOnly="True"
+                                 ItemsSource="{Binding}"
+                                 ShowGroupPanel="False">
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn Width="70"
+                                                DataMemberBinding="{Binding Ius}"
+                                                Header="R. Dig."
+                                                IsFilterable="False" />
+                    <telerik:GridViewDataColumn Width="*"
+                                                DataMemberBinding="{Binding Rubro}"
+                                                Header="Rubro"
+                                                IsFilterable="False">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock MaxHeight="80"
+                                           FontWeight="Bold"
+                                           Text="{Binding Rubro}"
+                                           TextAlignment="Justify"
+                                           TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="*"
+                                                DataMemberBinding="{Binding Texto}"
+                                                Header="Texto"
+                                                IsFilterable="False">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock MaxHeight="80"
+                                           Text="{Binding Texto}"
+                                           TextAlignment="Justify"
+                                           TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="*"
+                                                DataMemberBinding="{Binding Precedentes}"
+                                                Header="Precedentes"
+                                                IsFilterable="False">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock MaxHeight="80"
+                                           Text="{Binding Precedentes}"
+                                           TextAlignment="Justify"
+                                           TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+            <Label x:Name="LblTotal"
+                   Grid.Row="1"
+                   Margin="15,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Content=""
+                   FontSize="16"
+                   Foreground="Red" />
+            <telerik:RadComboBox x:Name="CbxFiltroVol"
+                                 Grid.RowSpan="2"
+                                 Width="250"
+                                 Margin="0,0,10,0"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 DisplayMemberPath="VolumenTxt"
+                                 ItemsSource="{Binding}"
+                                 SelectedValuePath="Volumenes" SelectionChanged="CbxFiltroVol_SelectionChanged" />
+            <Label Margin="0,0,270,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Content="Volumen:" />
+        </Grid>
+
+
+    </Grid>
+</UserControl>

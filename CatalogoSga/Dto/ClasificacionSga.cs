@@ -13,6 +13,11 @@ namespace CatalogoSga.Dto
         bool? isChecked = false;
         ClasificacionSga parent;
 
+        public ClasificacionSga GetParent()
+        {
+            return this.parent;
+        }
+
         #endregion // Data
 
         bool isReadOnly = false;

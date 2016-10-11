@@ -82,7 +82,7 @@ namespace CatalogoSga
             List<ClasificacionSga> materias = new ClasificacionSgaModel().GetClasificacion(-1);
 
             PdfTreeStructure pdf = new PdfTreeStructure();
-            pdf.GenerateTreeStructure(materias);
+            pdf.GenerateTreeStructure();
         }
 
         public void ImprimeEstructuraWord()
@@ -90,7 +90,7 @@ namespace CatalogoSga
             List<ClasificacionSga> materias = new ClasificacionSgaModel().GetClasificacion(-1);
 
             WordTreeStructure pdf = new WordTreeStructure();
-            pdf.CreateDocument(materias);
+            pdf.CreateDocument();
         }
     }
 }
